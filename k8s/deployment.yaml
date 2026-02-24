@@ -21,6 +21,10 @@ spec:
           ports:
             - containerPort: 3000
 
+          envFrom:
+            - configMapRef:
+                name: user-service-config
+
           livenessProbe:
             httpGet:
               path: /health

@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
   res.json({
-    message: "User Service Running",
+    message: "User Service Running v3",
     environment: APP_ENV,
     dbPasswordConfigured: DB_PASSWORD !== "not-set"
   });

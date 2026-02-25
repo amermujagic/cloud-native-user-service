@@ -108,8 +108,9 @@ Ingress uses host-based routing.
 HPA automatically scales pods based on CPU utilization.
 
 Check status:
+```bash
 kubectl get hpa
-
+```
 ## 🔐 Configuration Management
 
 Environment configuration is managed via:
@@ -127,9 +128,9 @@ npm install
 npm start
 ```
 Build Docker image:
-
+```bash
 docker build -t user-service:local .
-
+```
 ## 🗺 Project Evolution
 
 Initial deployment used raw Kubernetes manifests.

@@ -1,4 +1,4 @@
-🚀 Cloud-Native User Service
+# 🚀 Cloud-Native User Service
 
 A production-ready cloud-native microservice built with Node.js, Docker, Kubernetes, Helm, and CI/CD.
 
@@ -11,7 +11,7 @@ This project demonstrates modern DevOps practices including:
 • Helm packaging
 • CI pipeline with Docker Hub publishing
 
-🧱 Architecture Overview
+## 🧱 Architecture Overview
 Developer Push
       ↓
 GitHub Actions (CI)
@@ -26,7 +26,7 @@ Kubernetes Cluster (Minikube)
       ↓
 Ingress → Service → Pods
 
-🛠 Tech Stack
+## 🛠 Tech Stack
 
 • Node.js (Express)
 • Docker (multi-stage, multi-arch)
@@ -37,7 +37,7 @@ Ingress → Service → Pods
 • GitHub Actions
 • Docker Hub
 
-📦 Project Structure
+## 📦 Project Structure
 cloud-native-user-service/
 │
 ├── app/                     # Node.js application
@@ -46,7 +46,7 @@ cloud-native-user-service/
 ├── .github/workflows/       # CI pipeline
 └── README.md
 
-🐳 Docker
+## 🐳 Docker
 
 • Multi-stage Docker build
 • Multi-architecture support (linux/amd64, linux/arm64)
@@ -58,7 +58,7 @@ cloud-native-user-service/
 Docker Hub repository:
 mujagicamer/cloud-native-user-service
 
-☸ Kubernetes Features
+## ☸ Kubernetes Features
 
 • Deployment with rolling updates
 • Service (ClusterIP)
@@ -69,7 +69,7 @@ mujagicamer/cloud-native-user-service
 • ConfigMap (non-sensitive config)
 • Secret (sensitive config)
 
-📦 Helm Deployment
+## 📦 Helm Deployment
 
 All Kubernetes resources are managed via Helm.
 
@@ -82,7 +82,7 @@ helm rollback user-service <revision>
 View Release History
 helm history user-service
 
-🔁 CI Pipeline
+## 🔁 CI Pipeline
 
 On every push:
 1. Checkout repository
@@ -96,7 +96,7 @@ Multi-architecture builds ensure compatibility with:
 • AMD64 (GitHub runner)
 • ARM64 (Apple Silicon / Minikube)
 
-🌐 Local Access
+## 🌐 Local Access
 
 After deployment:
 http://user.test/
@@ -104,14 +104,14 @@ http://user.test/users
 
 Ingress uses host-based routing.
 
-📈 Autoscaling
+## 📈 Autoscaling
 
 HPA automatically scales pods based on CPU utilization.
 
 Check status:
 kubectl get hpa
 
-🔐 Configuration Management
+## 🔐 Configuration Management
 
 Environment configuration is managed via:
 • ConfigMap → APP_ENV, PORT
@@ -119,7 +119,7 @@ Environment configuration is managed via:
 
 Follows 12-factor app principles.
 
-🧪 Local Development
+## 🧪 Local Development
 
 Run locally:
 
@@ -131,7 +131,7 @@ Build Docker image:
 
 docker build -t user-service:local .
 
-🗺 Project Evolution
+## 🗺 Project Evolution
 
 Initial deployment used raw Kubernetes manifests.
 
@@ -139,7 +139,7 @@ Deployment is now fully managed via Helm.
 
 Legacy manifests are preserved in the legacy/ folder.
 
-🚀 Upcoming Improvements
+## 🚀 Upcoming Improvements
 
 • Helm versioning strategy
 • Dev/Prod values separation
@@ -148,7 +148,7 @@ Legacy manifests are preserved in the legacy/ folder.
 • Security scanning (Trivy)
 • Advanced CI/CD enhancements
 
-🎯 Purpose
+## 🎯 Purpose
 
 This project demonstrates:
 • Cloud-native architecture

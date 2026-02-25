@@ -5,13 +5,15 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 const APP_ENV = process.env.APP_ENV || "development";
+const DB_PASSWORD = process.env.DB_PASSWORD || "not-set";
 
 app.use(express.json());
 
 app.get("/", (req, res) => {
   res.json({
     message: "User Service Running",
-    environment: APP_ENV
+    environment: APP_ENV,
+    dbPasswordConfigured: DB_PASSWORD !== "not-set"
   });
 });
 

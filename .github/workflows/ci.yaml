@@ -32,6 +32,7 @@ jobs:
         with:
           context: ./app
           push: true
+          platforms: linux/amd64, linux/arm64
           tags: |
             mujagicamer/cloud-native-user-service:latest
             mujagicamer/cloud-native-user-service:${{ steps.vars.outputs.SHA }}

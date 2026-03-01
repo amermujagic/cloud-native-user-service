@@ -20,6 +20,7 @@ hpa:
   targetCPUUtilizationPercentage: 60
 
 ingress:
+  enabled: true
   host: user.test
 
 config:

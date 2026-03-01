@@ -1,4 +1,17 @@
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate
+*.tfstate.*
+
+
+# Terraform provider binaries
+terraform-provider-*
+
+# Node
 app/node_modules/
+
 .env
 app/.env
 .DS_Store

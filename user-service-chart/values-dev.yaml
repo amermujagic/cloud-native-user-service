@@ -17,6 +17,7 @@ hpa:
   enabled: false
 
 ingress:
+  enabled: true
   host: dev.user.test
 
 config:

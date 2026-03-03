@@ -1,159 +1,202 @@
 # 🚀 Cloud-Native User Service
 
-A production-ready cloud-native microservice built with Node.js, Docker, Kubernetes, Helm, and CI/CD.
+Production-style cloud-native microservice built with **Node.js, Docker, Kubernetes, Helm, Terraform, and GitOps (ArgoCD)**.
 
-This project demonstrates modern DevOps practices including:
+This project demonstrates a complete DevOps lifecycle including CI automation, deterministic container versioning, Infrastructure as Code, and GitOps-based continuous deployment.
 
-- Containerization
-- Multi-architecture Docker builds
-- Kubernetes deployment
-- Autoscaling (HPA)
-- Helm packaging
-- CI pipeline with Docker Hub publishing
+---
 
 ## 🧱 Architecture Overview
+
 <p align="center">
-  <img src="docs/architecture.png" width="800"/>
+  <img src="docs/architecture.png" width="900"/>
 </p>
+
+---
+
+## 🔄 CI/CD & GitOps Flow
+
+```text
+Developer Push
+      ↓
+GitHub Actions (CI)
+  - Multi-arch Docker build (amd64 + arm64)
+  - Tag image with commit SHA
+  - Push image to Docker Hub
+      ↓
+GitHub Actions (CD)
+  - Update image tag in values-prod.yaml
+  - Commit back to repository
+      ↓
+ArgoCD (GitOps)
+  - Detect Git change
+  - Auto-sync & self-heal
+      ↓
+Helm
+      ↓
+Kubernetes Cluster
+  - Rolling update
+  - HPA scaling
+```
+
+No manual deployment steps are required.
+
+---
 
 ## 🛠 Tech Stack
 
 - Node.js (Express)
-- Docker (multi-stage, multi-arch)
+- Docker (multi-stage, multi-architecture builds)
 - Kubernetes (Minikube)
 - Helm
-- Horizontal Pod Autoscaler (HPA)
-- ConfigMap & Secret
+- Terraform
+- ArgoCD (GitOps)
 - GitHub Actions
 - Docker Hub
 
+---
+
 ## 📦 Project Structure
+
 ```text
 cloud-native-user-service/
 ├── app/                     # Node.js application
-├── user-service-chart/      # Helm chart (deployment source of truth)
-├── legacy/                  # Raw Kubernetes manifests (pre-Helm)
-├── .github/workflows/       # CI pipeline
+├── user-service-chart/      # Helm chart (templated K8s manifests)
+├── terraform/               # Infrastructure as Code (Helm via Terraform)
+├── legacy/                  # Initial raw K8s manifests
+├── docs/                    # Architecture diagrams
+├── .github/workflows/       # CI/CD pipelines
 └── README.md
 ```
 
+---
+
 ## 🐳 Docker
 
-- Multi-stage Docker build
-- Multi-architecture support (linux/amd64, linux/arm64)
-- Automatic image push to Docker Hub
-- Image tagging strategy:
-    - latest
-    - short commit SHA
+- Multi-stage build
+- Multi-architecture support (`linux/amd64`, `linux/arm64`)
+- Commit SHA image tagging
+- Automated image publishing to Docker Hub
 
 Docker Hub repository:
-mujagicamer/cloud-native-user-service
+
+`mujagicamer/cloud-native-user-service`
+
+---
 
 ## ☸ Kubernetes Features
 
 - Deployment with rolling updates
 - Service (ClusterIP)
-- Ingress (host-based routing)
-- Liveness & Readiness probes
+- NGINX Ingress
+- Liveness & readiness probes
 - Resource requests & limits
 - Horizontal Pod Autoscaler (CPU-based)
-- ConfigMap (non-sensitive config)
-- Secret (sensitive config)
+- ConfigMap & Secret configuration
+- Zero-downtime updates
 
-## 📦 Helm Deployment
+---
 
-All Kubernetes resources are managed via **Helm**.
+## 📦 Helm
 
-#### Install
+Application is packaged as a Helm chart with:
+
+- Templated Kubernetes manifests
+- Environment-based configuration (DEV / PROD)
+- Version-controlled deployment strategy
+
+Example commands:
+
 ```bash
 helm install user-service ./user-service-chart
-```
-#### Upgrade
-```bash
 helm upgrade user-service ./user-service-chart
-```
-#### Rollback
-```bash
 helm rollback user-service <revision>
 ```
-#### View Release History
+
+---
+
+## 🏗 Terraform
+
+Terraform manages Helm releases and environment selection:
+
 ```bash
-helm history user-service
+terraform apply -var="env=prod" -var="image_tag=<commit-sha>"
 ```
 
-## 🔁 CI Pipeline
+Features:
 
-On every push:
-1. Checkout repository
-2. Build Docker image
-3. Tag with:
-    • latest
-    • short commit SHA
-4. Push to Docker Hub
+- Environment variable-based configuration
+- Dynamic image tag injection
+- Declarative infrastructure management
 
-Multi-architecture builds ensure compatibility with:
-- AMD64 (GitHub runner)
-- ARM64 (Apple Silicon / Minikube)
+In production, Terraform state would typically be stored in a remote backend (e.g., S3 + DynamoDB locking).
 
-## 🌐 Local Access
+---
 
-After deployment:
-- http://user.test/
-- http://user.test/users
+## 🔁 GitOps (ArgoCD)
 
-Ingress uses host-based routing.
+ArgoCD continuously monitors the repository and:
 
-## 📈 Autoscaling
+- Detects configuration changes
+- Automatically syncs cluster state
+- Ensures self-healing
+- Prunes obsolete resources
 
-HPA automatically scales pods based on CPU utilization.
+Git is the single source of truth.
 
-Check status:
+---
+
+## 🌐 Local Development
+
+### Start environment (after reboot)
+
 ```bash
-kubectl get hpa
+colima start
+minikube start --driver=docker
+minikube service ingress-nginx-controller -n ingress-nginx
 ```
-## 🔐 Configuration Management
 
-Environment configuration is managed via:
-- ConfigMap → APP_ENV, PORT
-- Secret → DB_PASSWORD
+### Run application locally (without Kubernetes)
 
-Follows 12-factor app principles.
-
-## 🧪 Local Development
-
-### Run locally:
 ```bash
 cd app
 npm install
 npm start
 ```
-Build Docker image:
-```bash
-docker build -t user-service:local .
-```
-## 🗺 Project Evolution
 
-Initial deployment used raw Kubernetes manifests.
+---
 
-Deployment is now fully managed via Helm.
+## 🎯 Design Decisions
 
-Legacy manifests are preserved in the legacy/ folder.
+### Why GitOps?
+To ensure the cluster state always reflects the repository state. No manual deployments are required.
 
-## 🚀 Upcoming Improvements
+### Why SHA-based image tagging?
+To guarantee deterministic deployments and enable safe rollbacks.
 
-- Helm versioning strategy
-- Dev/Prod values separation
-- Terraform (Infrastructure as Code)
-- GitOps (ArgoCD)
-- Security scanning (Trivy)
-- Advanced CI/CD enhancements
+### Why Helm?
+To manage Kubernetes resources as reusable, templated packages.
 
-## 🎯 Purpose
+### Why Terraform?
+To demonstrate Infrastructure as Code and environment-based orchestration.
 
-This project demonstrates:
-- Cloud-native architecture
-- Kubernetes operations
-- CI/CD automation
-- Helm-based release management
-- Multi-architecture container builds
-- Production deployment patterns
+---
+
+## 🚀 What This Project Demonstrates
+
+- End-to-end CI/CD automation
+- GitOps workflow with ArgoCD
+- Multi-environment configuration management
+- Deterministic versioned deployments
+- Kubernetes operational patterns
+- Infrastructure as Code best practices
+- Production-style deployment strategy
+
+---
+
+## 🔮 Future Improvements
+
+- Container image security scanning (Trivy)
+- Remote Terraform backend
+- Observability integration (Prometheus/Grafana)
+- Cloud deployment (EKS / GKE)

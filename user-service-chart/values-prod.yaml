@@ -15,7 +15,7 @@ resources:
 
 hpa:
   enabled: true
-  minReplicas: 3
+  minReplicas: 4
   maxReplicas: 6
   targetCPUUtilizationPercentage: 60
 

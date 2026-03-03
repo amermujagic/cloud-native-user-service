@@ -1,4 +1,4 @@
-replicaCount: 4
+replicaCount: 3
 
 image:
   repository: mujagicamer/cloud-native-user-service
@@ -15,7 +15,7 @@ resources:
 
 hpa:
   enabled: true
-  minReplicas: 4
+  minReplicas: 3
   maxReplicas: 6
   targetCPUUtilizationPercentage: 60
 

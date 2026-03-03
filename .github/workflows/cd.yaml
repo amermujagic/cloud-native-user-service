@@ -1,5 +1,8 @@
 name: CD - Update Image Tag
 
+permissions:
+  contents: write
+
 on:
   workflow_run:
     workflows: ["CI/CD Pipeline"]

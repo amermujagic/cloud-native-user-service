@@ -2,7 +2,7 @@ replicaCount: 3
 
 image:
   repository: mujagicamer/cloud-native-user-service
-  tag: 1801da3
+  tag: 5aa5013
   pullPolicy: Always
 
 resources:
